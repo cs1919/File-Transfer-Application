@@ -48,7 +48,8 @@ class fle_transfer {
         long fileSize = file.length();
 
         try (SocketChannel socketChannel = SocketChannel.open(new java.net.InetSocketAddress(serverAddress, FILE_TRANSFER_PORT));
-             FileChannel fileChannel = new FileInputStream(file).getChannel()) {
+             FileInputStream fis = new FileInputStream(file);
+             FileChannel fileChannel = fis.getChannel()) {
 
             ByteBuffer buffer = ByteBuffer.allocate(4096);
             long totalBytesSent = 0;
@@ -108,9 +109,13 @@ class fle_transfer {
         }
     }
 
-    // Method to send filename (no changes)
+    // Method to send filename (with changes)
     static boolean sendFilename(String ipadd, String filename) {
         try {
+            //add a print statement to print the filename as well as invoking of the method like started sending filename method
+            
+            System.out.println("Sending filename: " + filename);
+            
             filename = new File(filename).getName();
             try (Socket socket = new Socket(ipadd, FILENAME_TRANSFER_PORT)) {
                 OutputStream outputStream = socket.getOutputStream();
@@ -126,14 +131,17 @@ class fle_transfer {
         }
     }
 
-    // Method to receive filename (no changes)
+    // Method to receive filename (with changes)
     static String receiveFilename() {
-        try {
-            ServerSocket serverSocket = new ServerSocket(FILENAME_TRANSFER_PORT);
-            Socket socket = serverSocket.accept();
+        try (ServerSocket serverSocket = new ServerSocket(FILENAME_TRANSFER_PORT);
+             Socket socket = serverSocket.accept();
+             InputStream inputStream = socket.getInputStream()) {
             senderIpAddress = socket.getInetAddress().getHostAddress();
-            InputStream inputStream = socket.getInputStream();
             int filenameLength = inputStream.read();
+            if (filenameLength <= 0) {
+                System.out.println("Invalid filename length.");
+                return null;
+            }
 
             byte[] filenameBytes = new byte[filenameLength];
             int totalBytesRead = 0;

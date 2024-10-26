@@ -33,8 +33,8 @@ public class database_connection {
         try (Connection connection = getConnection()) {
             if (connection != null) {
             	Statement statement = connection.createStatement();
-                    // 
-            	int rowsInserted = statement.executeUpdate("INSERT INTO trans_acc (accid,accname, password) VALUES (null,'sai', 123)");
+            	@SuppressWarnings("unused")
+                int rowsInserted = statement.executeUpdate("INSERT INTO trans_acc (accid,accname, password) VALUES (null,'sai', 123)");
                     
                 System.out.println("Database connection established successfully.");
             }

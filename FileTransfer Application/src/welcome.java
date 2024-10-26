@@ -20,14 +20,9 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileSystemView;
 import java.io.*;
-import java.net.UnknownHostException;
-import java.sql.SQLException;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JProgressBar;
-import java.awt.TextField;
 import java.awt.SystemColor;
-import javax.swing.UIManager;
 
 public class welcome {
 
@@ -206,8 +201,7 @@ public class welcome {
 		lblNewLabel_1_3_1.setBounds(193, 120, 79, 35);
 		card2sgn.add(lblNewLabel_1_3_1);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
+		textField_1 = new JTextField(); // Ensure textField_1 is initialized
 		textField_1.setBounds(290, 86, 199, 29);
 		card2sgn.add(textField_1);
 		
@@ -219,29 +213,28 @@ public class welcome {
 		JButton btnCreateAccount = new JButton("Create Account");
 		btnCreateAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String accname=textField_1.getText();
-				String phnumber=textField_2.getText();
-				String passwordstr=textField_5.getText();
-				
-				if(accname.equals("")||passwordstr.equals("")) {
-					JOptionPane.showMessageDialog(card2sgn, "fill all the values");
-				}else {
-				int password=Integer.parseInt(passwordstr);
-				int accid=db_methods.createAccount(accname,password);
-				if(accid>0) {
-					JOptionPane.showMessageDialog(card2sgn, "Account Created Successfully");
-					textField_1.setText("");
-					textField_2.setText("");
-					textField_5.setText("");
-                    JOptionPane.showMessageDialog(card2sgn,"Your Account id is: "+accid,accname, JOptionPane.INFORMATION_MESSAGE);
-					cardLayout.show(panel, "login_page_card");
-				}else {
-					JOptionPane.showMessageDialog(card2sgn,"Problem in creating account\n account already exists");
+				String accname = textField_1.getText();
+				String phnumber = textField_2.getText(); // Ensure this is used or remove it
+				String passwordstr = textField_5.getText(); // Ensure textField_5 is initialized
+		
+				if (accname.equals("") || passwordstr.equals("")) {
+					JOptionPane.showMessageDialog(card2sgn, "Fill all the values");
+				} else {
+					try {
+						int password = Integer.parseInt(passwordstr);
+						int accid = db_methods.createAccount(accname, password);
+						if (accid > 0) {
+							JOptionPane.showMessageDialog(card2sgn, "Account Created Successfully");
+							textField_1.setText("");
+							textField_2.setText("");
+							textField_5.setText("");
+						}
+					} catch (NumberFormatException ex) {
+						JOptionPane.showMessageDialog(card2sgn, "Password must be a number");
+					}
 				}
-			}}
+			}
 		});
-		btnCreateAccount.setFont(new Font("Bahnschrift", Font.BOLD, 14));
-		btnCreateAccount.setBounds(217, 208, 164, 35);
 		card2sgn.add(btnCreateAccount);
 		
 		JLabel lblNewLabel_1_3_1_1 = new JLabel("Password:");

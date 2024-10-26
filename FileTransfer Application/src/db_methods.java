@@ -4,14 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
+//import java.time.LocalDate;
 
 import javax.swing.JOptionPane;
 
 public class db_methods {
     static int createAccount(String name, int pass) {
         System.out.println("Account creation started");
-        LocalDate currentDate = LocalDate.now();
+        //LocalDate currentDate = LocalDate.now();
         InetAddress localhost;
         String ipAddress = "";
         try {
