@@ -1,2 +1,3 @@
 # File-Transfer-Application
-java Socket Programming
+The two devices(laptops) should be in the same internet connection(hotspot of same device)
+
